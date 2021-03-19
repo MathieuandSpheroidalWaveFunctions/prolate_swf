@@ -1,10 +1,3 @@
-module param
-    integer, parameter :: knd = selected_real_kind(8)
-    logical, parameter :: debug = .true.
-    logical, parameter :: warn = .true.
-    logical, parameter :: output = .true.
-end module param
-
 module prolate_swf
   use param
 
@@ -36,12 +29,19 @@ module prolate_swf
 !               and eta for specified values of c and m.
 !
 !  Profcn can be run in either double precision or quadruple precision
-!  arithmetic. The choice is set in the module param located above at
-!  the beginning of profcn. Here, the kind parameter knd is set by the
-!  statement:
-!      integer, parameter :: knd = selected_real_kind(8)
+!  arithmetic. The choice is set in the module param provided in the github
+!  repository. If this is not available, then create param as follows:
+!    module param
+!    integer, parameter :: knd = selected_real_kind(8)
+!    logical, parameter :: debug = .true.
+!    logical, parameter :: warn = .true.
+!    logical, parameter :: output = .true.
+!    end module param
 !  Set the value of knd in the parenthesis to either 8 for double
-!  precision or 16 for quadruple precision arithmetic.
+!  precision or 16 for quadruple precision arithmetic. Some compilers
+!  require that param be compiled prior to rather than after the module
+!  prolate_swf. The logicals in param are described in the readme file
+!  and below in the discussion of the output files.
 !
 !  Profcn provides accurate results over very wide parameter ranges when
 !  using double precision. It provides higher accuracy using quadruple

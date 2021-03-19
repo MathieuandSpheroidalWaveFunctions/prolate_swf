@@ -37,16 +37,21 @@
   exponent.
 
   Profcn can be run in either double precision or quadruple precision
-  arithmetic. The choice is set in the module param located above
-  right before profcn. For some compilers, the module param must be
-  located before profcn. In param, the kind parameter knd is set by
-  the statement:
-      integer, parameter :: knd = selected_real_kind(8)
-  Set the value of knd in the parenthesis to either 8 for 64 bit
-  arithmetic (double precision) or to 16 for 128 bit arithmetic
-  (quadruple precision). Using quadruple precision will provide
-  higher accuracy over larger parameter ranges but will increase the
-  run time by a significant factor.
+  arithmetic. The choice is set in the module param provided in the github
+  repository. If this is not available, then create param as follows:
+
+    module param
+    integer, parameter :: knd = selected_real_kind(8)
+    logical, parameter :: debug = .true.
+    logical, parameter :: warn = .true.
+    logical, parameter :: output = .true.
+    end module param
+
+  Set the value of knd in the parenthesis to either 8 for double
+  precision or 16 for quadruple precision arithmetic. Some compilers
+  require that param be compiled prior to rather than after profcn.
+  The logicals in param are described below in the discussion of the
+  output files.  
 
   Some computers may have more than 8 bytes for double precision
   data and more than 16 bytes for quadruple precision data or may use

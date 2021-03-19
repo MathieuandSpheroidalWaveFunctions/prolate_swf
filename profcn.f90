@@ -1,10 +1,3 @@
-module param
-    integer, parameter :: knd = selected_real_kind(8)
-    logical, parameter :: debug = .true.
-    logical, parameter :: warn = .true.
-    logical, parameter :: output = .true.
-end module param
-!     
        program profcn   
 !      version 1.10 March 2021
 !
@@ -25,6 +18,21 @@ end module param
 !               functions and their first derivatives with
 !               respect to eta for a range of values for m, l,
 !               and eta for a specified value of c.
+!
+!  Profcn can be run in either double precision or quadruple precision
+!  arithmetic. The choice is set in the module param provided in the github
+!  repository. If this is not available, then create param as follows:
+!    module param
+!    integer, parameter :: knd = selected_real_kind(8)
+!    logical, parameter :: debug = .true.
+!    logical, parameter :: warn = .true.
+!    logical, parameter :: output = .true.
+!    end module param
+!  Set the value of knd in the parenthesis to either 8 for double
+!  precision or 16 for quadruple precision arithmetic. Some compilers
+!  require that param be compiled prior to rather than after profcn.
+!  The logicals in param are described in the readme file and below in
+!  the discussion of the output files.
 !
 !  Profcn can be run in either double precision or quadruple precision
 !  arithmetic. The choice is set in the module param located above at
