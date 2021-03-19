@@ -1,4 +1,4 @@
-  			Prolate_swf
+                        Prolate_swf
 
   Profcn is available as both a subroutine version provided as
   the module Prolate_swf and a stand alone version profcn. It was
@@ -406,7 +406,7 @@
      the specific techniques used and the numbers of terms required
      for the radial function and angular function calculations,
      respecively. They are annotated and should be self-explanatory.
-     
+
      fort.60
 
      This file may be of interest to the user. It is recommended that
