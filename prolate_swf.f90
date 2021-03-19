@@ -3602,7 +3602,7 @@ end if
         if(naccn.gt.naccnmax) naccnmax=naccn
         if(ndec-naccns.lt.naccr+2) iopnee=2
         if(nacciop.eq.0.and.naccn.gt.nacceta) naccnmax=max(naccnmaxp, &
-            nacceta)
+           nacceta)
           if(nacceta.lt.3.and.naccmax.eq.0.and.ndec-naccns.ge. &
               naccr) then
           iopnee=0
