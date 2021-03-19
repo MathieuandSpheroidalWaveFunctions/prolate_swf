@@ -1740,7 +1740,7 @@ end if
           if(pnorm(k).eq.0.0e0_knd) go to 310
           if((ix.eq.0).and.(abs(barg(k)).lt.adec)) go to 310
           if(((abs(abs(barg(k))-1.0e0_knd)).lt.adec).and.(m.ne.0) &
-              .and.(m.ne.2)) go to 310
+             .and.(m.ne.2)) go to 310
           go to 320
 310       s1dc(k)=0.0e0_knd
           is1de(k)=0
