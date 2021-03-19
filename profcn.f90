@@ -1,4 +1,4 @@
-       program profcn   
+       program profcn
 !      version 1.10 March 2021
 !
     use param
@@ -338,7 +338,7 @@ end if
 !  integer and real(knd) arrays with dimension lnum
         dimension iqdl(lnum),iql(lnum),ifajo(lnum)
         real(knd) qdl(lnum),ql(lnum),fajo(lnum)
-        real(knd) eig(lnum)   
+        real(knd) eig(lnum)
 !
 !  real(knd) arrays with dimension maxd
         real(knd) enr(maxd),bliste(maxd),gliste(maxd), &
@@ -690,8 +690,8 @@ end if
                               eig3,eig4,ndec,maxd,eigval,eig5,enr,ienre)
               if(ix.eq.1) call conver(l,m,c,limd,blisto,glisto,eig1, &
                               eig3,eig4,ndec,maxd,eigval,eig5,enr,ienro)
-              eig(li)=eigval                
-                               
+              eig(li)=eigval
+
 if (debug) then
               if(knd.eq.kindd.and.ioprad.ne.0) write(40,165) l,eigval
 165           format(1x,'l =',i6,5x,'eigenvalue =',e23.14)
@@ -1308,7 +1308,7 @@ end if
               if(iplflag.eq.1.and.incnflag.eq.1.and.netatry.eq.2) &
                      iopnee=0
               ietacount=0
-              insflag=0    
+              insflag=0
               if(naccns.eq.ndec.and.x.le.1.11e0_knd) insflag=1
               if((naccd.ge.naccdp.or.naccd.ge.minacc.or.naccd.ge.naccrp &
                   .or.naccd.ge.naccr).and.(naccd+naccdp.gt.0).and. &

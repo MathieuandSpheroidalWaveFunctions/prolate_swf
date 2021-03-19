@@ -4,12 +4,12 @@ module prolate_swf
   contains
 
     subroutine profcn(c, m, lnum, ioprad, x1, iopang, iopnorm, narg, arg, &
-                      r1c, ir1e, r1dc, ir1de, r2c, &    
+                      r1c, ir1e, r1dc, ir1de, r2c, &
                       ir2e, r2dc, ir2de, naccr, &
                       s1c, is1e, s1dc, is1de, naccs)
 
 !      version 1.10 March 2021
-!        
+!
 !  Subroutine version of the fortran program profcn originally developed
 !  about 2000 by arnie lee van buren and jeffrey boisvert. Updated
 !  several times since then. For more information see the GitHub
@@ -187,7 +187,7 @@ module prolate_swf
         mmin = m
         minc = 0
         maxm = mmin + minc * (mnum - 1)
-        
+
         maxint=lnum + 3 * ndec + int(c) + 5
         maxj = maxint + maxm
         maxp = maxint
@@ -199,10 +199,10 @@ module prolate_swf
             lnump = max(lnum + maxm, 1000)
             if(x1 >= 0.00065e0_knd) maxn = 2 * (lnump * (-18.5e0_knd - 20.e0_knd * &
                             log10(x1)) + 5 * ndec + 4 * maxm + c + 5000) + maxm + 5
-            
+
             if(x1 > 0.08e0_knd) maxn = 2 * (lnump * (0.5e0_knd - 3.0e0_knd * &
                             log10(x1)) + 5 * ndec + 4 * maxm + c + 1000) + maxm + 5
-            
+
             if(x1.gt.1.0e0_knd) maxn = 2 * (lnump * 0.5e0_knd + 5 * ndec &
                             + 4 * maxm + c + 500) + maxm + 5
             maxp=max(maxn, maxp)
@@ -217,11 +217,11 @@ module prolate_swf
         maxp=max(maxp, maxpdr)
         maxd=maxp / 2 + 1
         maxlp=lnum + maxm + 5
-        maxmp = maxm +5 
+        maxmp = maxm +5
         maxt = 1
         jnenmax = 10
         if(iopang.ne.0) maxt = narg
-        
+
          call main (mmin,minc,mnum,lnum,c,ioprad,iopang,iopnorm,minacc, &
                     x1,ngau,arg,narg,neta,maxd,maxdr,maxint,maxj,maxlp, &
                     maxm,maxmp,maxn,maxp,maxpdr,maxq,maxt,jnenmax, &
@@ -362,7 +362,7 @@ module prolate_swf
 !               ir2d   : array of exponents corresponding to qr1d
 !                        (ir2de in call to subroutine profcn)
 !               nar    : vector of lnum values for the estimated radial
-!                        function accuracy  
+!                        function accuracy
 !               s1     : two dimensional array of the characteristics
 !                        of the angular functions of the first kind
 !                        s1(i,j) is the characteristic for the jth
@@ -379,7 +379,7 @@ module prolate_swf
 !                       (is1de in call to subroutine profcn)
 !               nas    : two dimensional array nas(lnum,narg) of the
 !                        estimated accuracy values for the narg angular
-!                        function values for each of the lnum values of l    
+!                        function values for each of the lnum values of l
 !
         use param
 !
@@ -746,7 +746,7 @@ end if
                               eig3,eig4,ndec,maxd,eigval,eig5,enr,ienre)
               if(ix.eq.1) call conver(l,m,c,limd,blisto,glisto,eig1, &
                               eig3,eig4,ndec,maxd,eigval,eig5,enr,ienro)
-              eig(li)=eigval                
+              eig(li)=eigval
 if (debug) then
               if(knd.eq.kindd.and.ioprad.ne.0) write(40,165) l,eigval
 165           format(1x,'l =',i6,5x,'eigenvalue =',e23.14)
@@ -1371,8 +1371,8 @@ end if
               iopeta=2
               if(iplflag.eq.1.and.incnflag.eq.1.and.netatry.eq.2) &
                      iopnee=0
-              ietacount=0           
-              insflag=0    
+              ietacount=0
+              insflag=0
               if(naccns.eq.ndec.and.x.le.1.11e0_knd) insflag=1
               if((naccd.ge.naccdp.or.naccd.ge.minacc.or.naccd.ge.naccrp &
                   .or.naccd.ge.naccr).and.(naccd+naccdp.gt.0).and. &

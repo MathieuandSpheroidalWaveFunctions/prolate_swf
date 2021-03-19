@@ -5,7 +5,7 @@
   originally developed by arnie lee van buren and jeffrey boisvert
   over 20 years ago and has been improved a number of times since
   then.
-  
+
   Table of Contents
   1. Purpose
   2. Introduction
@@ -13,9 +13,9 @@
   4. Accuracy of results
   5. Obtaining the expansion d coefficients
   6. Obtaining the eigenvalues
-  
 
- 1. Purpose 
+
+ 1. Purpose
 
   To calculate the first and second kind prolate radial functions r1
   and r2 and their first derivatives r1d and r2d for a given order m,
@@ -25,7 +25,7 @@
   values of m, l and c and for a set of values of the angular coordinate
   eta. The subroutine version prolate calculates values for a single
   input value of m . The stand alone version calculates values for a
-  range of values of m. 
+  range of values of m.
 
  2. Introduction
 
@@ -51,7 +51,7 @@
   precision or 16 for quadruple precision arithmetic. Some compilers
   require that param be compiled prior to rather than after profcn.
   The logicals in param are described below in the discussion of the
-  output files.  
+  output files.
 
   Some computers may have more than 8 bytes for double precision
   data and more than 16 bytes for quadruple precision data or may use
@@ -72,7 +72,7 @@
   derivatives," Quart. Appl. Math. vol 62, pp. 493-507 (2004)
   [available as a pdf file on the website].
 
- 3. Input and Output  
+ 3. Input and Output
 
   Following is a description of the input and output parameters in the
   call statement for the subroutine version. After that will be a
@@ -80,7 +80,7 @@
   stand alone version. Note that these output files, if desired, can
   also be obtained when running the subroutine version. See comments about
   this below.
-  
+
   A sample input and resulting output from profcn is provided by the
   files profcndat (text version of the input file profcn.dat for the
   stand alone version), profort20 (text version of the output file
@@ -426,7 +426,7 @@
      where this occurs will be written to fort.60. Note that this has never
      been observed over the many years that this routine has been used for
      prolate eigenvalues.
-    
+
   4. Accuracy of Results
 
   Use of double precision arithmetic can provide accurate results up to
@@ -650,4 +650,4 @@
 
   The eigenvalues for the prolate functions are computed in subroutine
   conver and returned to main where they are stored in the vector eig(l+1).
-  There is such a vector created for each value of m. 
+  There is such a vector created for each value of m.
