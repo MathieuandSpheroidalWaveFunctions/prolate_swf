@@ -90,9 +90,17 @@
 
   Subroutine Version of profcn
 
-    subroutine profcn(c,m,lnum,ioprad,x1,r1c,ir1e,r1dc,ir1de,r2c, &
-                      ir2e,r2dc,ir2de,naccr,iopang,iopnorm,narg,arg,s1c, &
-                      is1e,s1dc,is1de,naccs)
+    subroutine profcn(c,m,lnum,ioprad,x1,iopang,iopnorm,narg,arg, &
+                      r1c,ir1e,r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr, &
+                      s1c,is1e,s1dc,is1de,naccs)
+
+  real(knd), intent (in)  ::  c, x1, arg(narg)
+  integer, intent (in)    ::  m, lnum, ioprad, iopang, iopnorm, narg
+  real(knd), intent (out) ::  r1c(lnum), r1dc(lnum), r2c(lnum), r2dc(lnum), &
+                              s1c(lnum, narg), s1dc(lnum, narg)
+  integer, intent (out)   ::  ir1e(lnum), ir1de(lnum), ir2e(lnum), ir2de(lnum), &
+                              is1e(lnum, narg), is1de(lnum, narg), & 
+                              naccr(lnum), naccs(lnum, narg)
 
       Input and output parameters appearing in the subroutine call
       statement are defined below:
