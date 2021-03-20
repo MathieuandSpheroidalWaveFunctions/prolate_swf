@@ -152,7 +152,7 @@ module prolate_swf
 !       precision and quadruple precision if those values are different than
 !       these.
 
-        kindd=8
+5       kindd=8
         kindq=16
 
 !       set the minimum desired accuray minacc to 10 for real*8
