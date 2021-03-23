@@ -392,6 +392,7 @@ module prolate_swf
                   rm,rm2,r1c,r1dc,r2c,r2dc,r2ec,r2dec,r2ic,r2dic,r2lc, &
                   r2dlc,r2nc,r2dnc,sgn,termpq,x,xb,xbninp,x1,wm,wronc, &
                   wront,wronca,wroncb
+        character chr
 !
 !  integer and real(knd) arrays with dimension lnum
         dimension iqdl(lnum),iql(lnum),ifajo(lnum),nar(lnum)
@@ -1429,14 +1430,12 @@ end if
               r2dc=0.0e0_knd
               ir2de=0
 680           continue
-if (debug) then
-              if(ioprad.eq.2.and.nacce.ne.1) write(20,690)l,r1c,ir1e, &
-                     r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr
-690           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,'w')
-              if(ioprad.eq.2.and.nacce.eq.1) write(20,700)l,r1c,ir1e, &
-                     r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr
-700           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,'e')
+if (output) then
+              if(nacce.ne.1) chr = 'w'
+              if(nacce.eq.1) chr = 'e'
+              if(ioprad.eq.2) write(20,690)l,r1c,ir1e,r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr,chr
               if(ioprad.eq.1) write(20,710) l,r1c,ir1e,r1dc,ir1de
+690           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,a) 
 710           format(1x,i6,2x,2(f17.14,1x,i6,2x))
 end if
               qr1(li)=r1c
@@ -3884,12 +3883,14 @@ end if
 !
 !  error printout
 210 continue
-if (debug) then
+if (output) then
         write(20,220) l,c,m
+end if
+if (warn) then
         write(60,220) l,c,m
+end if
 220     format(1x,'error in eigenvalue at l= ',i5,2x,'c = ',e25.15, &
                2x,'m= ',i5)
-end if
         return
         end subroutine
 !
