@@ -38,10 +38,9 @@ module prolate_swf
 !    logical, parameter :: output = .true.
 !    end module param
 !  Set the value of knd in the parenthesis to either 8 for double
-!  precision or 16 for quadruple precision arithmetic. Some compilers
-!  require that param be compiled prior to rather than after the module
-!  prolate_swf. The logicals in param are described in the readme file
-!  and below in the discussion of the output files.
+!  precision or 16 for quadruple precision arithmetic. The logicals
+!  in param are described in the readme file and below in the discussion
+!  of the output files.
 !
 !  Profcn provides accurate results over very wide parameter ranges when
 !  using double precision. It provides higher accuracy using quadruple
