@@ -334,6 +334,7 @@ end if
                   rm,rm2,r1c,r1dc,r2c,r2dc,r2ec,r2dec,r2ic,r2dic,r2lc, &
                   r2dlc,r2nc,r2dnc,sgn,termpq,x,xb,xbninp,x1,wm,wronc, &
                   wront,wronca,wroncb
+        character chr
 !
 !  integer and real(knd) arrays with dimension lnum
         dimension iqdl(lnum),iql(lnum),ifajo(lnum)
@@ -1365,14 +1366,12 @@ end if
               r2dc=0.0e0_knd
               ir2de=0
 680           continue
-if (debug) then
-              if(ioprad.eq.2.and.nacce.ne.1) write(20,690)l,r1c,ir1e, &
-                     r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr
-690           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,'w')
-              if(ioprad.eq.2.and.nacce.eq.1) write(20,700)l,r1c,ir1e, &
-                     r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr
-700           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,'e')
+if (output) then
+              if(nacce.ne.1) chr = 'w'
+              if(nacce.eq.1) chr = 'e'
+              if(ioprad.eq.2) write(20,690)l,r1c,ir1e,r1dc,ir1de,r2c,ir2e,r2dc,ir2de,naccr,chr
               if(ioprad.eq.1) write(20,710) l,r1c,ir1e,r1dc,ir1de
+690           format(1x,i6,2x,4(f17.14,1x,i6,2x),i2,a) 
 710           format(1x,i6,2x,2(f17.14,1x,i6,2x))
 end if
               if(ioprad.ne.2) go to 720
@@ -1413,10 +1412,10 @@ end if
 if (debug) then
                 if(knd.eq.kindd.and.ioparg.eq.0) write(50,730) arg(jarg),naccs(jarg)
                 if(knd.eq.kindq.and.ioparg.eq.0) write(50,735) arg(jarg),naccs(jarg)
-                if(knd.eq.kindd.and.ioparg.eq.1) write(50,740) barg(jarg),naccs(jarg)
-                if(knd.eq.kindq.and.ioparg.eq.1) write(50,745) barg(jarg),naccs(jarg)
 730             format(1x,'theta = ',e21.14,'  accuracy = ',i5,' digits.')
 735             format(1x,'theta = ',e38.31,'  accuracy = ',i5,' digits.')
+                if(knd.eq.kindd.and.ioparg.eq.1) write(50,740) barg(jarg),naccs(jarg)
+                if(knd.eq.kindq.and.ioparg.eq.1) write(50,745) barg(jarg),naccs(jarg)
 740             format(1x,'eta = ',e21.14,'  accuracy = ',i5, ' digits.')
 745             format(1x,'eta = ',e38.31,'  accuracy = ',i5, ' digits.')
 end if
@@ -1740,7 +1739,7 @@ end if
           if(pnorm(k).eq.0.0e0_knd) go to 310
           if((ix.eq.0).and.(abs(barg(k)).lt.adec)) go to 310
           if(((abs(abs(barg(k))-1.0e0_knd)).lt.adec).and.(m.ne.0) &
-             .and.(m.ne.2)) go to 310
+              .and.(m.ne.2)) go to 310
           go to 320
 310       s1dc(k)=0.0e0_knd
           is1de(k)=0
@@ -3528,7 +3527,7 @@ end if
         if(naccn.gt.naccnmax) naccnmax=naccn
         if(ndec-naccns.lt.naccr+2) iopnee=2
         if(nacciop.eq.0.and.naccn.gt.nacceta) naccnmax=max(naccnmaxp, &
-            nacceta)
+           nacceta)
           if(nacceta.lt.3.and.naccmax.eq.0.and.ndec-naccns.ge. &
               naccr) then
           iopnee=0
@@ -3810,12 +3809,14 @@ end if
 !
 !  error printout
 210 continue
-if (debug) then
+if (output) then
         write(20,220) l,c,m
+end if
+if (warn) then
         write(60,220) l,c,m
+end if
 220     format(1x,'error in eigenvalue at l= ',i5,2x,'c = ',e25.15, &
                2x,'m= ',i5)
-end if
         return
         end subroutine
 !
