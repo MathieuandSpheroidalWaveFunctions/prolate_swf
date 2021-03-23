@@ -33,11 +33,6 @@
 !  in param are described in the readme file and below in the
 !  discussion of the output files.
 !
-!  Some computers may use different kind values than 8 and 16 for
-!  double and quadruple precision. In this case just use these values
-!  in param. Also change the values for kindd and kindq given
-!  below (statement 5) to these kind values.
-!
 !  Profcn provides accurate results over very wide parameter ranges when
 !  using double precision. It provides higher accuracy using quadruple
 !  precision but run times are considerable greater.
