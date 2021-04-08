@@ -419,8 +419,8 @@ end if
 if (debug) then
           if(knd.eq.kindd.and.ioprad.ne.0) write(40,25) x,c
 25        format(1x,'x = ',e23.14,/,1x,'c = ',e23.14)
-          if(knd.eq.kindq.and.ioprad.ne.0) write(40,25) x,c
-30        format(1x,'x = ',e39.31,/,1x,'c = ',e39.31)
+          if(knd.eq.kindq.and.ioprad.ne.0) write(40,30) x,c
+30        format(1x,'x = ',e39.30,/,1x,'c = ',e39.30)
 end if
           nc=int(log10(c))
           if(nc.lt.0) nc=0
@@ -433,7 +433,7 @@ if (debug) then
              if(knd.eq.kindd.and.iopang.ne.0) write(50,35) c,m
  35          format(1x,'c = ',e23.14,'; m = ',i5)
              if(knd.eq.kindq.and.iopang.ne.0) write(50,40) c,m
- 40          format(1x,'c = ',e40.30,'; m = ',i5)
+ 40          format(1x,'c = ',e39.30,'; m = ',i5)
              if(ioprad.ne.0) write(40,50) m
 50           format(1x,'m = ',i5)
 end if
@@ -441,7 +441,7 @@ if (output) then
              if(knd.eq.kindd.and.iopang.ne.0) write(30,60) c,m
  60          format(1x,e23.14,i5)
              if(knd.eq.kindq.and.iopang.ne.0) write(30,70) c,m
- 70          format(1x,e40.30,i5)
+ 70          format(1x,e39.30,i5)
 end if
             rm=m
             rm2=m+m
@@ -537,7 +537,7 @@ if (output) then
             if(knd.eq.kindd.and.ioprad.ne.0) write(20,115) x,c,m
 115         format(1x,e23.14,e23.14,i5)
             if(knd.eq.kindq.and.ioprad.ne.0) write(20,120) x,c,m
-120         format(1x,e40.30,e40.30,i5)
+120         format(1x,e39.30,e39.30,i5)
 end if
               do 850 li=1,lnum
               l=m+(li-1)
@@ -688,7 +688,7 @@ if (debug) then
               if(knd.eq.kindd.and.ioprad.ne.0) write(40,165) l,eigval
 165           format(1x,'l =',i6,5x,'eigenvalue =',e23.14)
               if(knd.eq.kindq.and.ioprad.ne.0) write(40,170) l,eigval
-170           format(1x,'l =',i6,5x,'eigenvalue =',e40.30)
+170           format(1x,'l =',i6,5x,'eigenvalue =',e39.30)
 end if
               if(ix.eq.1) go to 175
               limdle=limd+2
@@ -727,7 +727,7 @@ if (debug) then
               if(knd.eq.kindd) write(40,180) r1c,ir1e,r1dc,ir1de
               if(knd.eq.kindq) write(40,185) r1c,ir1e,r1dc,ir1de
 180           format(10x,'r1 = ', f17.14,i6,5x,'r1d = ',f17.14,i6)
-185           format(10x,'r1 = ', f34.31,i6,5x,'r1d = ',f34.31,i6)
+185           format(10x,'r1 = ', f33.30,i6,5x,'r1d = ',f33.30,i6)
 end if
               if(ioprad.ne.2) go to 680
 !
@@ -806,7 +806,7 @@ if (debug) then
 210           format(15x,'accuracy in decimal digits = ',i2,/,10x, &
                      'r2 = ',f17.14,i6,5x,'r2d = ',f17.14,i6)
 220           format(15x,'accuracy in decimal digits = ',i2,/,10x, &
-                     'r2 = ',f34.31,i6,5x,'r2d = ',f34.31,i6)
+                     'r2 = ',f33.30,i6,5x,'r2d = ',f33.30,i6)
 end if
 230           continue
 !
@@ -1282,7 +1282,7 @@ if (debug) then
                      'r2 = ',f17.14,i5,5x,'r2d = ',f17.14,i5)
 630           format(15x,'accuracy in decimal digits = ',i2,5x, &
                     'eta = ',f12.9,'; nee = ',i4/,10x, &
-                     'r2 = ',f34.31,i5,5x,'r2d = ',f34.31,i5)
+                     'r2 = ',f33.30,i5,5x,'r2d = ',f33.30,i5)
 end if
               if(naccetas.gt.naccetamax.or.(naccetas.eq.0.and.naccetamax &
                  .eq.0.and.iopnee.eq.0)) neemax=nee
@@ -1403,12 +1403,12 @@ end if
 if (debug) then
                 if(knd.eq.kindd.and.ioparg.eq.0) write(50,730) arg(jarg),naccs(jarg)
                 if(knd.eq.kindq.and.ioparg.eq.0) write(50,735) arg(jarg),naccs(jarg)
-730             format(1x,'theta = ',e21.14,'  accuracy = ',i5,' digits.')
-735             format(1x,'theta = ',e38.31,'  accuracy = ',i5,' digits.')
+730             format(1x,'theta = ',e23.14,'  accuracy = ',i5,' digits.')
+735             format(1x,'theta = ',e39.30,'  accuracy = ',i5,' digits.')
                 if(knd.eq.kindd.and.ioparg.eq.1) write(50,740) barg(jarg),naccs(jarg)
                 if(knd.eq.kindq.and.ioparg.eq.1) write(50,745) barg(jarg),naccs(jarg)
-740             format(1x,'eta = ',e21.14,'  accuracy = ',i5, ' digits.')
-745             format(1x,'eta = ',e38.31,'  accuracy = ',i5, ' digits.')
+740             format(1x,'eta = ',e23.14,'  accuracy = ',i5, ' digits.')
+745             format(1x,'eta = ',e39.30,'  accuracy = ',i5, ' digits.')
 end if
 if (output) then
                 if(ioparg.eq.0.and.iopang.eq.1) write(30,750) arg(jarg),s1c(jarg),is1e(jarg),naccs(jarg)
@@ -1425,8 +1425,8 @@ if (debug) then
                 if(knd.eq.kindq.and.iopang.eq.2) write(50,800)s1c(jarg),is1e(jarg),s1dc(jarg),is1de(jarg)
 770             format(12x,'s1 = ',f17.14,2x,i5)
 780             format(12x,'s1 = ',f17.14,2x,i5,5x,'s1d = ',f17.14,2x,i5)
-790             format(12x,'s1 = ',f34.31,2x,i5)
-800             format(12x,'s1 = ',f34.31,2x,i5,/,10x,'s1d = ',f34.31,2x,i5)
+790             format(12x,'s1 = ',f33.30,2x,i5)
+800             format(12x,'s1 = ',f33.30,2x,i5,/,10x,'s1d = ',f33.30,2x,i5)
 end if
 810             continue
 850           continue
