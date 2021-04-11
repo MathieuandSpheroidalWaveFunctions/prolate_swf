@@ -1491,8 +1491,8 @@ end if
 if (debug) then
                 if(knd.eq.kindd) write(50,740) barg(jarg),naccs(jarg)
                 if(knd.eq.kindq) write(50,745) barg(jarg),naccs(jarg)
-740             format(1x,'eta = ',e23.14,'  accuracy = ',i5, ' digits.')
-745             format(1x,'eta = ',e39.30,'  accuracy = ',i5, ' digits.')
+740             format(1x,'eta = ',f17.14,'  accuracy = ',i5, ' digits.')
+745             format(1x,'eta = ',f33.30,'  accuracy = ',i5, ' digits.')
 end if
 if (output) then
                 if(iopang.eq.1) write(30,750) barg(jarg),s1c(jarg),is1e(jarg),naccs(jarg)
