@@ -878,7 +878,7 @@ if (debug) then
 210           format(15x,'accuracy in decimal digits = ',i2,/,10x, &
                      'r2 = ',f17.14,i6,5x,'r2d = ',f17.14,i6)
 220           format(15x,'accuracy in decimal digits = ',i2,/,10x, &
-                     'r2 = ',f34.31,i6,5x,'r2d = ',f34.31,i6)
+                     'r2 = ',f33.30,i6,5x,'r2d = ',f33.30,i6)
 end if
 230           continue
 !
@@ -1354,7 +1354,7 @@ if (debug) then
                      'r2 = ',f17.14,i5,5x,'r2d = ',f17.14,i5)
 630           format(15x,'accuracy in decimal digits = ',i2,5x, &
                     'eta = ',f12.9,'; nee = ',i4/,10x, &
-                     'r2 = ',f34.31,i5,5x,'r2d = ',f34.31,i5)
+                     'r2 = ',f33.30,i5,5x,'r2d = ',f33.30,i5)
 end if
               if(naccetas.gt.naccetamax.or.(naccetas.eq.0.and.naccetamax &
                  .eq.0.and.iopnee.eq.0)) neemax=nee
@@ -3888,7 +3888,7 @@ end if
 if (warn) then
         write(60,220) l,c,m
 end if
-220     format(1x,'error in eigenvalue at l= ',i5,2x,'c = ',e25.15, &
+220     format(1x,'error in eigenvalue at l= ',i5,2x,'c = ',e23.14, &
                2x,'m= ',i5)
         return
         end subroutine
