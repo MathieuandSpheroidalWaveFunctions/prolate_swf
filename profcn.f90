@@ -1403,12 +1403,12 @@ end if
 if (debug) then
                 if(knd.eq.kindd.and.ioparg.eq.0) write(50,730) arg(jarg),naccs(jarg)
                 if(knd.eq.kindq.and.ioparg.eq.0) write(50,735) arg(jarg),naccs(jarg)
-730             format(1x,'theta = ',e23.14,'  accuracy = ',i5,' digits.')
-735             format(1x,'theta = ',e39.30,'  accuracy = ',i5,' digits.')
+730             format(1x,'theta = ',f19.14,'  accuracy = ',i5,' digits.')
+735             format(1x,'theta = ',f35.30,'  accuracy = ',i5,' digits.')
                 if(knd.eq.kindd.and.ioparg.eq.1) write(50,740) barg(jarg),naccs(jarg)
                 if(knd.eq.kindq.and.ioparg.eq.1) write(50,745) barg(jarg),naccs(jarg)
-740             format(1x,'eta = ',e23.14,'  accuracy = ',i5, ' digits.')
-745             format(1x,'eta = ',e39.30,'  accuracy = ',i5, ' digits.')
+740             format(1x,'eta = ',f17.14,'  accuracy = ',i5, ' digits.')
+745             format(1x,'eta = ',f33.30,'  accuracy = ',i5, ' digits.')
 end if
 if (output) then
                 if(ioparg.eq.0.and.iopang.eq.1) write(30,750) arg(jarg),s1c(jarg),is1e(jarg),naccs(jarg)
