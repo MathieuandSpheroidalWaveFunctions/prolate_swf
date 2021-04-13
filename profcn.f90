@@ -1278,10 +1278,10 @@ if (debug) then
               if(knd.eq.kindq) write(40,630) naccetas,etaval,nee,r2ec, &
                                           ir2ee,r2dec,ir2dee
 620           format(15x,'accuracy in decimal digits = ',i2,5x, &
-                    'eta = ',f12.9,'; nee = ',i4/,10x, &
+                    'eta = ',f17.14,'; nee = ',i4/,10x, &
                      'r2 = ',f17.14,i5,5x,'r2d = ',f17.14,i5)
 630           format(15x,'accuracy in decimal digits = ',i2,5x, &
-                    'eta = ',f12.9,'; nee = ',i4/,10x, &
+                    'eta = ',f17.14,'; nee = ',i4/,10x, &
                      'r2 = ',f33.30,i5,5x,'r2d = ',f33.30,i5)
 end if
               if(naccetas.gt.naccetamax.or.(naccetas.eq.0.and.naccetamax &
@@ -1691,7 +1691,7 @@ end if
 250         if(j.gt.jang) jang=j
 if (debug) then
           write(50,260) barg(k),j
-260       format(8x,'s1 calculation for eta = ',f13.8,' converged in ', &
+260       format(8x,'s1 calculation for eta = ',f17.14,' converged in ', &
                  i6,' terms.')
 end if
           if(lm2.lt.1) go to 280
