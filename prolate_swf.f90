@@ -840,6 +840,7 @@ end if
               nsubw=-int(log10(abs(wronc/wronca)+dec))
               if(nsubw.lt.0) nsubw=0
               if(naccint.gt.1) naccint=naccint+nsubw
+              if(naccint.gt.ndec-1) naccint=ndec-1
 if (debug) then
                 if(nsubw.gt.0) then
                 write(40,200) nsubw
@@ -1052,6 +1053,7 @@ end if
               nsubw=-int(log10(abs(wronc/wronca)+dec))
               if(nsubw.lt.0) nsubw=0
               if(naccneu.gt.1) naccneu=naccneu+nsubw
+              if(naccneu.gt.ndec-1) naccneu=ndec-1
 if (debug) then
                 if(nsubw.gt.0) then
                 write(40,200) nsubw
@@ -2806,7 +2808,7 @@ end if
         wronc=wronca-wroncb
         naccleg=-int(log10(abs((wronc-wront)/wront)+dec))
         if(naccleg.lt.0) naccleg=0
-        if(naccleg.gt.ndec) naccleg=ndec
+        if(naccleg.gt.ndec-1) naccleg=ndec-1
         nsubw=-int(log10(abs(wronc/wronca)+dec))
         if(nsubw.lt.0) nsubw=0
         if(naccleg.gt.1) naccleg=naccleg+nsubw
@@ -3565,6 +3567,7 @@ end if
         nsubw =-int(log10(abs(wronc/wroncm)+dec))
         nacceta=-int(log10(abs((wronc-wront)/wront)+dec))
         if(nacceta.lt.0) nacceta=0
+        if(nacceta.gt.ndec-1) nacceta=ndec-1
         nacciop=0
         if(nacceta.lt.minacc.and.naccn-nsubw.gt.naccd.and.naccn.gt. &
             nacceta.and.(naccn.ge.min(naccr,4).or.(jtestm.ge.ndec-1.and. &
