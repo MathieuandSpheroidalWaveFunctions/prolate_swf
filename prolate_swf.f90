@@ -8,7 +8,7 @@ module prolate_swf
            ir2e, r2dc, ir2de, naccr, &
            s1c, is1e, s1dc, is1de, naccs)
 
-!      version 1.10 March 2021
+!      version 1.11 April 2021
 !
 !  Subroutine version of the fortran program profcn originally developed
 !  about 2000 by arnie lee van buren and jeffrey boisvert. Updated
