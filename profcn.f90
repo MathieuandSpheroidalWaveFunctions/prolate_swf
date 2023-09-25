@@ -1,5 +1,5 @@
     program profcn
-!      version 1.12 May 2021
+!      version 1.13 Sep 2023
 !
   use param
 !
@@ -56,7 +56,10 @@
 !                 : =1 if radial functions of only the first kind
 !                      and their first derivatives are computed
 !                 : =2 if radial functions of both kinds and
-!                      their first derivatives are computed
+!                      their first derivatives are computed.
+!                      Note only radial functions of the first
+!                      kind and their first derivatives can be
+!                      computed if x = 1.0. 
 !
 !          iopang : (integer)
 !                 : =0 if angular functions are not computed
@@ -82,7 +85,14 @@
 !                   wavenumber and d = interfocal length) (real(knd))
 !          x1     : value of the radial coordinate x minus one (real(knd))
 !                   (a nominal value of 10.0e0_knd can be entered for x1
-!                   if ioprad = 0)
+!                   if ioprad = 0). x1 must be greater than 0.0e0_knd
+!                   if radial functions of both the first and second
+!                   kind are computed, i.e., ioprad must = 1 when x1 =
+!                   0.0e0_knd. Also, when x1 = 0.0e0_knd, the radial
+!                   functions of the first kind and their first derivatives
+!                   are equal to 0.0e0_knd unless m = 0. And the radial
+!                   functions of the second kind and their first derivatives
+!                   are infinite for all m.    
 !
 !       line 4:
 !          ioparg : (integer)
@@ -157,6 +167,7 @@ end if
     read(1,*) ioprad, iopang, iopnorm
     read(1,*) c, x1
     if(iopang /= 0) read(1,*) ioparg, arg1, darg, narg
+    if(x1 == 0.0e0_knd) ioprad = 1
 !
 !  set array dimensions
     maxm = mmin + minc * (mnum - 1)
@@ -318,13 +329,13 @@ end if
 !
 !  real(knd) scalars
     real(knd) aj1, aj2, ang, apcoef, apcoefn, arg1, c, c2, c4, coefn, &
-         coefme, coefmo, darg, dec, dfnorm, dmfnorm, dmsnorm, dmlf, &
-         dmlmf, dmlms, dmlms1, dneg, d01, eigval, eigvalp, eig1, &
-         eig2, eig3, eig4, eig5, etaval, factor, pcoefe, pcoefet, &
-         pcoefn, pcoefo, pdcoefe, pdcoefet, pdcoefo, pi, qdml, qml, &
-         rm, rm2, r1c, r1dc, r2c, r2dc, r2ec, r2dec, r2ic, r2dic, r2lc, &
-         r2dlc, r2nc, r2dnc, sgn, termpq, x, xb, xbninp, x1, wm, wronc, &
-         wront, wronca, wroncb
+         coefme, coefmo, coefr1e, coefr1o, darg, dec, dfnorm, dmfnorm, &
+         dmsnorm, dmlf, dmlmf, dmlms, dmlms1, dneg, d01, dold, dnew, &
+         eigval, eigvalp, eig1, eig2, eig3, eig4, eig5, etaval, factor, &
+         pcoefe, pcoefet, pcoefn, pcoefo, pdcoefe, pdcoefet, pdcoefo, &
+         pi, qdml, qml, rl, rm, rm2, r1c, r1dc, r2c, r2dc, r2ec, r2dec, &
+         r2ic, r2dic, r2lc, r2dlc, r2nc, r2dnc, sgn, termpq, x, xb, xbninp, &
+         x1, wm, wronc, wront, wronca, wroncb
     character chr
 !
 !  integer and real(knd) arrays with dimension lnum
@@ -493,7 +504,7 @@ end if
            beta, gamma, coefa, coefb, coefc, coefd, coefe)
       limcsav = limps1
       iopd = 3
-90     if(ioprad == 0 .or. mi /= 1) go to 100
+90     if(ioprad == 0 .or. mi /= 1 .or. x1 == 0.0e0_knd) go to 100
       limj = lnum + 3 * ndec + int(c) + maxm
       xb = sqrt(x1 * (x1 + 2.0e0_knd))
       call sphbes(c, xb, limj, maxj, maxlp, sbesf, sbesdf, sbesn, ibese, &
@@ -710,6 +721,93 @@ if (debug) then
        write(40, 178)
 178      format(4x,'r1 and r1d calculation')
 end if
+if(x1 == 0.0e0_knd .and. m == 0) then
+! calculation of dfnorm
+!  forward summation of series
+    mml = ix - 1
+    lm2 = l/2
+    if(lm2 == 0) limfl = 1.5 * ndec + int(0.5e0_knd*c)
+    dold = 1.0e0_knd
+    dfnorm = dold
+     do j = lm2 + 1, limfl
+     jj = j + j + ix
+     dnew = -dold * enr(j) * real((jj + mml), knd) / real(jj - ix, knd)
+     dfnorm = dfnorm + dnew
+     if(abs(dnew / dfnorm) < dec) exit
+     dold = dnew
+     jmax=j
+     end do
+if (debug) then
+    write(40, 179) j, limfl
+179   format(15x,'Flammer norm. series converged in ',i6,' terms; ', &
+        i6,' available.')
+end if
+    limfl = jmax + 10                
+! backward summation of series
+    if(lm2 >= 1) then
+    dold = 1.0e0_knd
+     do j = lm2, 1,-1
+     jj = j + j + ix
+     dnew = -dold * (jj - ix) / (real((jj + mml), knd) &
+        *enr(j))
+     dfnorm = dfnorm + dnew
+     if(abs(dnew / dfnorm) < dec) exit
+     dold = dnew
+     end do
+    end if 
+    iterm = int(log10(abs(dfnorm)))
+    dfnorm = dfnorm * (10.0e0_knd ** (-iterm))
+    idfe = iterm
+    dmlf = 1.0e0_knd / dfnorm
+    idmlfe = -idfe
+!    
+! calculation of r1 and r1d when x = 1 and m = 0
+   if(l == 0) coefr1e = 1.0e0_knd
+   if(l == 1) coefr1o = 1.0e0_knd
+   rl = real(l, knd)
+   if(ix == 0) then
+   if(l > 0) coefr1e = coefr1e * rl / (rl - 1.0e0_knd)
+   r1c = coefr1e * d01 * dmlf
+   iterm = int(log10(abs(r1c)))
+   r1c = r1c * (10.0e0_knd ** (-iterm))
+   ir1e = id01 + idmlfe + iterm
+   r1dc = c * c * coefr1e * d01 * dmlf * ((enr(1) / 15.0e0_knd)-&
+      (1.0e0_knd / 3.0e0_knd))
+   iterm = int(log10(abs(r1dc)))
+   r1dc = r1dc * (10.0e0_knd ** (-iterm))
+   ir1de = id01 + idmlfe + iterm
+   end if    
+   if(ix == 1) then
+   if(l > 1) coefr1o = coefr1o * (rl - 1.0e0_knd) / rl
+   r1c = c * coefr1o * d01 * dmlf / 3.0e0_knd
+   iterm = int(log10(abs(r1c)))
+   r1c = r1c * (10.0e0_knd ** (-iterm))
+   ir1e = id01 + idmlfe + iterm
+   r1dc = c * c * c * coefr1o * d01 * dmlf * ((enr(1) / 35.0e0_knd)- &
+     (1.0e0_knd / 15.0e0_knd) + (1.0e0_knd / (3.0e0_knd * c * c)))
+   iterm = int(log10(abs(r1dc)))
+   r1dc = r1dc * (10.0e0_knd ** (-iterm))
+   ir1de = id01 + idmlfe + iterm
+   end if
+   if(abs(r1c) < 1.0e0_knd) then
+   r1c = r1c * 10.0e0_knd
+   ir1e = ir1e - 1
+   end if
+   if(abs(r1dc) < 1.0e0_knd) then
+   r1dc = r1dc * 10.0e0_knd
+   ir1de = ir1de - 1
+   end if
+go to 680
+end if
+if(x1 == 0.0e0_knd .and. m /= 0) then
+ r1c = 0.0e0_knd
+ ir1e = 0
+ r1dc = 0.0e0_knd
+ ir1de = 0
+go to 680
+end if 
+!
+!  calculation of r1 and r1d when x > 1 
        if(li == 1) limr1 = 3 * ndec + int(c)
        if(li /= 1) limr1 = jbes + jbes + 20 + int(sqrt(c))
        call r1bes(l, m, c, x1, limr1, ndec, maxd, enr, maxj, maxlp, &
@@ -728,6 +826,7 @@ if (debug) then
 180      format(10x,'r1 = ', f17.14, i6, 5x,'r1d = ',f17.14, i6)
 185      format(10x,'r1 = ', f33.30, i6, 5x,'r1d = ',f33.30, i6)
 end if
+186 continue
        if(ioprad /= 2) go to 680
 !
 !  determine prolate radial functions of the second kind
