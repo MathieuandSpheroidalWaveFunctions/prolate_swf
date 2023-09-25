@@ -1,4 +1,4 @@
-                        Prolate_swf
+                       Prolate_swf
 
   Profcn is available as both a subroutine version provided as
   the module Prolate_swf and a stand alone version profcn. It was
@@ -24,7 +24,7 @@
   functions and their first derivatives with respect to eta for the same
   values of m, l and c and for a set of values of the angular coordinate
   eta. The subroutine version prolate_swf calculates values for a single
-  input value of m . The stand alone version calculates values for a
+  input value of m . The stand alone version profcn calculates values for a
   range of values of m.
 
  2. Introduction
@@ -65,12 +65,21 @@
   A. L. Van Buren and J. E. Boisvert, "Accurate calculation of
   prolate spheroidal radial functions of the first kind and their
   first derivatives," Quart. Appl. Math. vol 60, pp. 589-599 (2002)
-  [available as a pdf file on the website].
 
   A. L. Van Buren and J. E. Boisvert, "Improved calculation of prolate
   spheroidal radial functions of the second kind and their first
   derivatives," Quart. Appl. Math. vol 62, pp. 493-507 (2004)
   [available as a pdf file on the website].
+  
+  [Both articles available at github.com/mathieuandspheroidalwavefunctions]
+  
+  Expressions to calculate the radial functions of the first kind and its
+  first derivatives for x = 1.0 when m = 0 are obtained from the limits of
+  equations given in the first reference. The resulting function values
+  provided by profcn are nearly fully accurate. The radial functions of
+  the first kind and their first derivatives are equal to 0.0 when m is
+  unequal to 0. [The corresponding radial functions of the second kind and
+  their first derivatives are infinite for all m.]  
 
  3. Input and Output
 
@@ -117,11 +126,16 @@
                       and their first derivatives are computed
                  : =2 if radial functions of both kinds and
                       their first derivatives are computed
-          x1     : value of the radial coordinate x minus 1.0. This
-                   choice is made to avoid subtraction errors in
-                   calculating quantities containing x - 1 when x
-                   is close to unity. (a nominal value can be entered
-                   for x1 if ioprad = 0)
+          x1     : value of the radial coordinate x minus 1.0.
+                   [real*8 or real*16]. This choice is made to avoid
+                   subtraction errors in calculating quantities
+                   containing x - 1 when x is close to unity.
+                   (a nominal value can be entered for x1 if ioprad = 0).
+                   x1 can range from very large to extremely small
+                   values, including 0.0. Note that for x1 = 0.0,
+                   ioprad must be set to 1 since the radial functions
+                   of the second kind and their first derivatives are
+                   infinite. 
           iopang : (integer)
                  : =0 if angular functions are not computed
                  : =1 if angular functions of the first kind
@@ -228,7 +242,16 @@
                    wavenumber and d = interfocal length) (real(knd))
           x1     : value of the radial coordinate x minus one (real(knd))
                    (a nominal value of 10.0e0_knd can be entered for x1
-                   if ioprad = 0)
+                   if ioprad = 0). [When x1 = 0.0e0_knd, ie. x = 1.0e0_knd,
+                   radial functions of the first kind and their first
+                   derivatives are = 0.0e0_knd when m is not equal to 0.
+                   Special formulas obtained as the limiting form of
+                   equations given in the journal article cited above
+                   for calculating radial functions of the first kind and
+                   their first derivatives are used to obtain values
+                   for m = 0. For all m, the radial functions of the second
+                   kind and their first derivatives are infinite. Thus
+                   ioprad must be set = 1 when x = 1.0e0_knd.]
 
        line 4:
           ioparg : (integer)
@@ -443,7 +466,11 @@
   over much wider parameter ranges. However, profcn runs significantly
   faster using double precision arithmetic. For both double and quadruple
   precision, the radial functions of the first kind r1 and their first
-  derivatives r1d are nearly fully accurate unless extremely close to a root.
+  derivatives r1d are nearly fully accurate unless extremely close to a root
+  or when x is extremely close to unity where r1d can lose a few digits
+  of accuracy when m = 0 and l is odd. Values of r1 and r1d for x = 1.0
+  are nearly fully accurate.
+
   The radial functions of the second kind r2 and their first derivatives
   r2d are usually accurate to ten or more digits in double precision and
   25 or more digits in quadruple precision. But r2 and r2d can be much less
@@ -497,12 +524,12 @@
   of m and l. For a desired value of x, a conservative estimate of the
   limit on c is given by the smaller of the limits for the two values
   of x that it lies between.
-
+  
   It is possible that a rare 4-digit result other than at a root will
   occur even when c is less than the appropriate table value. It is not
   expected that this will be a problem in use of these function values
   to solve problems involving them.
-
+  
                         Approximate Upper limit for c
 
           x         real*8 arithmetic    real*16 arithmetic
