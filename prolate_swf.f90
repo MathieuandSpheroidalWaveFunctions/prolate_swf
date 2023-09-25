@@ -8,7 +8,7 @@ module prolate_swf
            ir2e, r2dc, ir2de, naccr, &
            s1c, is1e, s1dc, is1de, naccs)
 
-!      version 1.12 May 2021
+!      version 1.13 Sep 2023
 !
 !  Subroutine version of the fortran program profcn originally developed
 !  about 2000 by arnie lee van buren and jeffrey boisvert. Updated
@@ -63,8 +63,11 @@ module prolate_swf
 !          x1     : value of the radial coordinate x minus 1.0. This
 !                   choice is made to avoid subtraction errors in
 !                   calculating quantities containing x - 1 when x
-!                   is close to unity. (a nominal value can be entered
-!                   for x1 if ioprad = 0)
+!                   is close to unity. Note that when x1 = 0.0,
+!                   ioprad must be set = 1, since r2 and r2d are
+!                   infinite in value in this case.   
+!                   (a nominal value can be entered for x1 if ioprad
+!                   = 0)
 !          iopang : (integer)
 !                 : =0 if angular functions are not computed
 !                 : =1 if angular functions of the first kind
@@ -185,7 +188,7 @@ module prolate_swf
     mnum = 1
     mmin = m
     minc = 0
-    maxm = mmin + minc * (mnum - 1)
+    maxm = mmin
 
     maxint = lnum + 3 * ndec + int(c) + 5
     maxj = maxint + maxm
@@ -384,13 +387,13 @@ module prolate_swf
 !
 !  real(knd) scalars
     real(knd) aj1, aj2, ang, apcoef, apcoefn, c, c2, c4, coefn, &
-         coefme, coefmo, dec, dfnorm, dmfnorm, dmsnorm, dmlf, &
-         dmlmf, dmlms, dmlms1, dneg, d01, eigval, eigvalp, eig1, &
-         eig2, eig3, eig4, eig5, etaval, factor, pcoefe, pcoefet, &
-         pcoefn, pcoefo, pdcoefe, pdcoefet, pdcoefo, pi, qdml, qml, &
-         rm, rm2, r1c, r1dc, r2c, r2dc, r2ec, r2dec, r2ic, r2dic, r2lc, &
-         r2dlc, r2nc, r2dnc, sgn, termpq, x, xb, xbninp, x1, wm, wronc, &
-         wront, wronca, wroncb
+         coefme, coefmo, coefr1e, coefr1o, dec, dfnorm, dmfnorm, &
+         dmsnorm, dmlf, dmlmf, dmlms, dmlms1, dneg, d01, dold, dnew, &
+         eigval, eigvalp, eig1, eig2, eig3, eig4, eig5, etaval, factor, &
+         pcoefe, pcoefet, pcoefn, pcoefo, pdcoefe, pdcoefet, pdcoefo, &
+         pi, qdml, qml, rl, rm, rm2, r1c, r1dc, r2c, r2dc, r2ec, r2dec, &
+         r2ic, r2dic, r2lc, r2dlc, r2nc, r2dnc, sgn, termpq, x, xb, &
+         xbninp, x1, wm, wronc, wront, wronca, wroncb
     character chr
 !
 !  integer and real(knd) arrays with dimension lnum
@@ -557,7 +560,7 @@ end if
            beta, gamma, coefa, coefb, coefc, coefd, coefe)
       limcsav = limps1
       iopd = 3
-90     if(ioprad == 0 .or. mi /= 1) go to 100
+90     if(ioprad == 0 .or. mi /= 1 .or. x1 == 0.0e0_knd) go to 100
       limj = lnum + 3 * ndec + int(c) + maxm
       xb = sqrt(x1 * (x1 + 2.0e0_knd))
       call sphbes(c, xb, limj, maxj, maxlp, sbesf, sbesdf, sbesn, ibese, &
@@ -782,6 +785,91 @@ if (debug) then
        write(40, 178)
 178      format(4x,'r1 and r1d calculation')
 end if
+!  calculation of r1 and r1d for x = 1
+   if(x1 == 0.0e0_knd .and. m == 0) then
+!   calculation of dfnorm
+!   forward summation of series
+    mml = ix - 1
+    lm2 = l/2
+    if(lm2 == 0) limfl = 1.5 * ndec + int(0.5e0_knd*c)
+    dold = 1.0e0_knd
+    dfnorm = dold
+     do j = lm2 + 1, limfl
+     jj = j + j + ix
+     dnew = -dold * enr(j) * real((jj + mml), knd) / real(jj - ix, knd)
+     dfnorm = dfnorm + dnew
+     if(abs(dnew / dfnorm) < dec) exit
+     dold = dnew
+     jmax=j
+     end do
+if (debug) then
+    write(40, 179) j, limfl
+179   format(15x,'Flammer norm. series converged in ',i6,' terms; ', &
+        i6,' available.')
+end if
+    limfl = jmax + 10                
+! backward summation of series
+    if(lm2 >= 1) then
+    dold = 1.0e0_knd
+     do j = lm2, 1,-1
+     jj = j + j + ix
+     dnew = -dold * (jj - ix) / (real((jj + mml), knd) &
+        *enr(j))
+     dfnorm = dfnorm + dnew
+     if(abs(dnew / dfnorm) < dec) exit
+     dold = dnew
+     end do
+    end if 
+    iterm = int(log10(abs(dfnorm)))
+    dfnorm = dfnorm * (10.0e0_knd ** (-iterm))
+    idfe = iterm
+    dmlf = 1.0e0_knd / dfnorm
+    idmlfe = -idfe
+    if(l == 0) coefr1e = 1.0e0_knd
+    if(l == 1) coefr1o = 1.0e0_knd
+    rl = real(l, knd)
+    if(ix == 0) then
+     if(l > 0) coefr1e = coefr1e * rl / (rl - 1.0e0_knd)
+     r1c = coefr1e * d01 * dmlf
+     iterm = int(log10(abs(r1c)))
+     r1c = r1c * (10.0e0_knd ** (-iterm))
+     ir1e = id01 + idmlfe + iterm
+     r1dc = c * c * coefr1e * d01 * dmlf * ((enr(1) / 15.0e0_knd)-&
+       (1.0e0_knd / 3.0e0_knd))
+     iterm = int(log10(abs(r1dc)))
+     r1dc = r1dc * (10.0e0_knd ** (-iterm))
+     ir1de = id01 + idmlfe + iterm
+    end if    
+    if(ix == 1) then
+     if(l > 1) coefr1o = coefr1o * (rl - 1.0e0_knd) / rl
+     r1c = c * coefr1o * d01 * dmlf / 3.0e0_knd
+     iterm = int(log10(abs(r1c)))
+     r1c = r1c * (10.0e0_knd ** (-iterm))
+     ir1e = id01 + idmlfe + iterm
+     r1dc = c * c * c * coefr1o * d01 * dmlf * ((enr(1) / 35.0e0_knd)- &
+       (1.0e0_knd / 15.0e0_knd) + (1.0e0_knd / (3.0e0_knd * c * c)))
+     iterm = int(log10(abs(r1dc)))
+     r1dc = r1dc * (10.0e0_knd ** (-iterm))
+     ir1de = id01 + idmlfe + iterm
+    end if
+    if(abs(r1c) < 1.0e0_knd) then
+     r1c = r1c * 10.0e0_knd
+     ir1e = ir1e - 1
+    end if
+    if(abs(r1dc) < 1.0e0_knd) then
+     r1dc = r1dc * 10.0e0_knd
+     ir1de = ir1de - 1
+    end if
+   go to 680
+   end if
+    if(x1 == 0.0e0_knd .and. m /= 0) then
+     r1c = 0.0e0_knd
+     ir1e = 0
+     r1dc = 0.0e0_knd
+     ir1de = 0
+     go to 680
+    end if
+! calculation of r1 and r1d for x /= 1 
        if(li == 1) limr1 = 3 * ndec + int(c)
        if(li /= 1) limr1 = jbes + jbes + 20 + int(sqrt(c))
        call r1bes(l, m, c, x1, limr1, ndec, maxd, enr, maxj, maxlp, &
