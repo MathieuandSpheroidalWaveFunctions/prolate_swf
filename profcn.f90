@@ -59,7 +59,7 @@
 !                      their first derivatives are computed.
 !                      Note only radial functions of the first
 !                      kind and their first derivatives can be
-!                      computed if x = 1.0. 
+!                      computed if x = 1.0.
 !
 !          iopang : (integer)
 !                 : =0 if angular functions are not computed
@@ -92,7 +92,7 @@
 !                   functions of the first kind and their first derivatives
 !                   are equal to 0.0e0_knd unless m = 0. And the radial
 !                   functions of the second kind and their first derivatives
-!                   are infinite for all m.    
+!                   are infinite for all m.
 !
 !       line 4:
 !          ioparg : (integer)
@@ -742,7 +742,7 @@ if (debug) then
 179   format(15x,'Flammer norm. series converged in ',i6,' terms; ', &
         i6,' available.')
 end if
-    limfl = jmax + 10                
+    limfl = jmax + 10
 ! backward summation of series
     if(lm2 >= 1) then
     dold = 1.0e0_knd
@@ -754,13 +754,13 @@ end if
      if(abs(dnew / dfnorm) < dec) exit
      dold = dnew
      end do
-    end if 
+    end if
     iterm = int(log10(abs(dfnorm)))
     dfnorm = dfnorm * (10.0e0_knd ** (-iterm))
     idfe = iterm
     dmlf = 1.0e0_knd / dfnorm
     idmlfe = -idfe
-!    
+!
 ! calculation of r1 and r1d when x = 1 and m = 0
    if(l == 0) coefr1e = 1.0e0_knd
    if(l == 1) coefr1o = 1.0e0_knd
@@ -776,7 +776,7 @@ end if
    iterm = int(log10(abs(r1dc)))
    r1dc = r1dc * (10.0e0_knd ** (-iterm))
    ir1de = id01 + idmlfe + iterm
-   end if    
+   end if
    if(ix == 1) then
    if(l > 1) coefr1o = coefr1o * (rl - 1.0e0_knd) / rl
    r1c = c * coefr1o * d01 * dmlf / 3.0e0_knd
@@ -805,9 +805,9 @@ if(x1 == 0.0e0_knd .and. m /= 0) then
  r1dc = 0.0e0_knd
  ir1de = 0
 go to 680
-end if 
+end if
 !
-!  calculation of r1 and r1d when x > 1 
+!  calculation of r1 and r1d when x > 1
        if(li == 1) limr1 = 3 * ndec + int(c)
        if(li /= 1) limr1 = jbes + jbes + 20 + int(sqrt(c))
        call r1bes(l, m, c, x1, limr1, ndec, maxd, enr, maxj, maxlp, &
