@@ -8,7 +8,7 @@ module prolate_swf
            ir2e, r2dc, ir2de, naccr, &
            s1c, is1e, s1dc, is1de, naccs)
 
-!      version 1.14 Dec 2023
+!      version 1.15 Dec 2023
 !
 !  Subroutine version of the fortran program profcn originally developed
 !  about 2000 by arnie lee van buren and jeffrey boisvert. Updated
@@ -3744,7 +3744,7 @@ end if
 !
 !  use expansion in terms of c**2 for low c, and
 !  expansion in terms of c for large c (c>8)
-    if(c > 80.0e0_knd) go to 60
+    if(c > 8.0e0_knd) go to 60
     if(c > 6.0e0_knd .and. m < 4) go to 60
     if(c > 3.0e0_knd .and. l == 0) go to 60
     if(c > 4.0e0_knd .and. l == 1) go to 60
